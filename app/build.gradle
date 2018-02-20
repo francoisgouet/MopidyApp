@@ -1,31 +1,41 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'androiddebugkey'
+            keyPassword 'mypswd'
+            storeFile file('C:/Users/françois GOUET.android/debug.keystore')
+            storePassword 'mypswd'
+        }
+    }
     compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+    buildToolsVersion "23.0.2"
     defaultConfig {
         applicationId "com.example.franoisgouet.myapplication"
-        minSdkVersion 8
+        minSdkVersion 15
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
-        debug {
-            debuggable true
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    productFlavors {
+        debug {
+            /signingConfig signingConfigs.config/
+            debuggable true
+        }
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    //testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile 'com.google.apis:google-api-services-youtube:v3-rev163-1.21.0'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
 }

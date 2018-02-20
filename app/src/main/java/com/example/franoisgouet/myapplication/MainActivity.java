@@ -1,53 +1,55 @@
 package com.example.franoisgouet.myapplication;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.Layout;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.app.ProgressDialog;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.VideoView;
+import android.view.View;
+import android.widget.Toast;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.YouTubePlayerView;
 
+public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
-public class MainActivity extends AppCompatActivity {
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
 
-    private VideoView myVideoView;
-    private int position = 0;
-    private int currentView;
-    private ProgressDialog progressDialog;
-    private MediaController mediaControls;
+    public static final String VIDEO_ID = "dBNbjraru_8";
+    public static final int SEARCH_RESULT = 1;
 
+    private GoogleApiClient client;
+    private String query;
 
-    @Override
-    public View findViewById(int id) {
-        return super.findViewById(id);
+    public MainActivity() {
+        query = "";
     }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        Log.i("here","OnCreaet");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        YouTubePlayerView youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubeplayerview);
+        youTubePlayerView.initialize(CONSTANT.DEVELOPER_KEY, this);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,99 +57,66 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        addListenerOnButton();
 
-        // set the media controllers buttons
-        if (mediaControls == null){
-            mediaControls = new MediaController(MainActivity.this);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        Intent myIntent = getIntent();
+        if (myIntent.getExtras() != null){
+            Log.i("here",myIntent.getStringExtra("query"));
         }
-
-        //initialize the videoview
-        myVideoView = (VideoView) findViewById(R.id.videoView2);
-        // create a progress bar while the video file is loading
-        progressDialog = new ProgressDialog(MainActivity.this);
-        // set a title for the progress bar
-        progressDialog.setTitle("JavaCodeGeeks Android Video View Example");
-        // set a message for the progress bar
-        progressDialog.setMessage("Loading...");
-        //set the progress bar not cancelable on users' touch
-        progressDialog.setCancelable(false);
-        // show the progress bar
-        progressDialog.show();
-        try {
-            //set the media controller in the VideoView
-            myVideoView.setMediaController(mediaControls);
-            //set the uri of the video to be played
-            myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.videoviewdemo));
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
+        else{
+            Log.i("here","myINtent is empty");
         }
-        myVideoView.requestFocus();
-        //we also set an setOnPreparedListener in order to know when the video file is ready for playback
-        myVideoView.setOnPreparedListener(new OnPreparedListener() {
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                // close the progress bar and play the video
-                progressDialog.dismiss();
-                //if we have a position on savedInstanceState, the video playback should start from here
-                myVideoView.seekTo(position);
-                if (position == 0) {
-                    myVideoView.start();
-                } else {
-                    //if we come from a resumed activity, video playback will be paused
-                    myVideoView.pause();
-                }
-            }
-        });
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        //we use onSaveInstanceState in order to store the video playback position for orientation change
-        savedInstanceState.putInt("Position", myVideoView.getCurrentPosition());
-        myVideoView.pause();
+    public SharedPreferences getSharedPreferences(String name, int mode) {
+        return super.getSharedPreferences(name, mode);
     }
+
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onPause() {
+        super.onPause();
+        Log.i("here","OnPauseAct1");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("here","Onresumeact1");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        //we use onRestoreInstanceState in order to play the video playback from the stored position
-        position = savedInstanceState.getInt("Position");
-        myVideoView.seekTo(position);
     }
 
-    public void addListenerOnButton() {
-        final LinearLayout myLayout= (LinearLayout) findViewById(R.id.LinearLayout2);
-        final ImageView imag = (ImageView) findViewById(R.id.img);
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("here", "Onrestartact1");
+    }
 
-        // Button for add
-        Button btn = (Button) findViewById(R.id.btnChangeImage);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imag.setImageResource(R.drawable.abc_ic_clear_material);
-                //myLayout.addView(imag);
-                // get a reference to the LayoutInflater service
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                // inflate add_view.xml to create new edit text views
-                final View newView = inflater.inflate(R.layout.add_view, null);
-                EditText editText = (EditText) newView.findViewById(R.id.editText);
-                Button remove = (Button) newView.findViewById(R.id.button1);
-                String text = getString(R.string.view_num) + " " + (currentView + 1);
-                String textbtn = getString(R.string.btn) + " " + (currentView + 1);
-                editText.setText(text);
-                myLayout.addView(newView);
-                currentView++;
-                remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ((LinearLayout) newView.getParent()).removeView(newView);
-                    }
-                });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SEARCH_RESULT){
+            if (resultCode == RESULT_OK){
+                query = data.getStringExtra("query");
+                Log.i("requete",query);
             }
-        });
+        }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -168,9 +137,66 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Called when the user click on the youtubeSearch button*/
-    public void youtubeSearch(View view){
-        Intent intent = new Intent();
-        //startActivityForResult();
+    @Override
+    public void onInitializationSuccess(Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+            if (!wasRestored) {
+                youTubePlayer.cueVideo(VIDEO_ID);
+            }
+    }
+
+    @Override
+    public void onInitializationFailure(Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+            Toast.makeText(getApplicationContext(),
+                    "onInitializationFailure()",
+                    Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.franoisgouet.myapplication/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.franoisgouet.myapplication/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
+    /** Called when the user clicks the Search button **/
+    public void searchActivity(View view) {
+        Intent intent = new Intent(this, Main2Activity.class);
+        intent.putExtra("request",query);
+        overridePendingTransition(R.anim.activity_in,R.anim.activity_out);
+        startActivityForResult(intent,1);
+        focus
     }
 }

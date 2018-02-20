@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    <Button
-        android:id="@+id/button1"
-        android:layout_height="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.google.android.youtube.player.YouTubeThumbnailView
         android:layout_width="match_parent"
-        android:text="@string/btn"
-        />
-    <EditText
-        android:id="@+id/editText"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/youtubethumbnailView"/>
+    <TextView
+        android:id="@+id/Textv"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="prout"
-        android:layout_below="@+id/button1"
-        android:ems="10" >
-        <requestFocus />
-    </EditText>
-</TableRow>
+        android:layout_height="0dp"
+        android:ems="10"
+        android:layout_weight="1"
+        android:layout_below="@+id/youtubethumbnailView">
+    </TextView>
+    <Button
+        android:id="@+id/ButtonAdd"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/Textv"
+        android:text="@string/btn_add_view"
+        android:layout_weight="1"
+        android:onClick="ReturnResult">
+    </Button>
+
+</LinearLayout>
