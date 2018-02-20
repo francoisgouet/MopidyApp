@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_settings">Settings</string>
+    <string name="m">Morceaux présents</string>
+    <string name="d">Morceaux deja ajoutés</string>
+    <string name="f">content</string>
+    <string name="btn_change">Add to scrollview</string>
+    <string name="view_num">Add to scrollview</string>
+    <string name="btn">remove this item</string>
+    <string name="button1">g</string>
+    <string name="searchyoutube">search with youtube</string>
+</resources>
