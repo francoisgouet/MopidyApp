@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.example.franoisgouet.myapplication"
         minSdkVersion 15

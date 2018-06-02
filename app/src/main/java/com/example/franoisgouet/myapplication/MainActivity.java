@@ -197,6 +197,5 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         intent.putExtra("request",query);
         overridePendingTransition(R.anim.activity_in,R.anim.activity_out);
         startActivityForResult(intent,1);
-        focus
     }
 }
